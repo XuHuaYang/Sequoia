@@ -1,12 +1,12 @@
 @echo off
 REM 切换到虚拟环境目录
-cd /d "C:\PythonProjects\Sequoia\.venv\Scripts"
+cd /d "I:\workspace\Sequoia\.venv\Scripts"
 
 REM 激活虚拟环境
 call activate
 
 REM 切换到 Python 脚本所在目录
-cd /d "C:\PythonProjects\Sequoia\"
+cd /d "I:\workspace\Sequoia\"
 
 REM 执行 Python 脚本
 python main.py

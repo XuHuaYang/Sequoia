@@ -72,14 +72,17 @@ def prepare():
 def process(stocks, strategies):
     stocks_data = data_fetcher.run(stocks)
     for strategy, strategy_func in strategies.items():
+        logger1.info(strategy)
         check(stocks_data, strategy, strategy_func)
         time.sleep(2)
 
 def check(stocks_data, strategy, strategy_func):
+    logger1.info(strategy)
     end = settings.config['end_date']
     m_filter = check_enter(end_date=end, strategy_fun=strategy_func)
     results = dict(filter(m_filter, stocks_data.items()))
     totalMap[strategy]=set(list(results.keys()))
+    logger1.info(strategy+"end")
     # if len(results) > 0:
         # push.strategy('**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(strategy, list(results.keys())))
 

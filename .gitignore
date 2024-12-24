@@ -12,3 +12,5 @@ config.yaml
 logs/*
 *.logs
 tests/*
+*.bat
+*.log
