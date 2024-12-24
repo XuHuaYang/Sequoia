@@ -64,6 +64,9 @@ def prepare():
             # 打印组合名称和交集内容
             combo_name = "+".join(combo)
             logger1.info(f"{combo_name}:\n {intersection}")
+            if len(intersection) > 0:
+                push.strategy(
+                    '**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(combo_name, list(intersection)))
     logging.info("************************ process   end ***************************************")
 
 def process(stocks, strategies):
@@ -77,8 +80,8 @@ def check(stocks_data, strategy, strategy_func):
     m_filter = check_enter(end_date=end, strategy_fun=strategy_func)
     results = dict(filter(m_filter, stocks_data.items()))
     totalMap[strategy]=set(list(results.keys()))
-    if len(results) > 0:
-        push.strategy('**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(strategy, list(results.keys())))
+    # if len(results) > 0:
+        # push.strategy('**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(strategy, list(results.keys())))
 
 
 def check_enter(end_date=None, strategy_fun=enter.check_volume):
