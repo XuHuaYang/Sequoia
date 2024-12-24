@@ -117,7 +117,7 @@ def check_volume(code_name, data, end_date=None, threshold=60):
 
 
 # 量比大于3.0
-def check_continuous_volume(code_name, data, end_date=None, threshold=60, window_size=3):
+def check_continuous_volume(code_name, data, end_date=None, threshold=60, window_size=7):
     stock = code_name[0]
     name = code_name[1]
     data['vol_ma5'] = pd.Series(tl.MA(data['成交量'].values, 5), index=data.index.values)
