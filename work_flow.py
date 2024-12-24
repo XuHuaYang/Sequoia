@@ -54,8 +54,8 @@ def check(stocks_data, strategy, strategy_func):
     end = settings.config['end_date']
     m_filter = check_enter(end_date=end, strategy_fun=strategy_func)
     results = dict(filter(m_filter, stocks_data.items()))
-    if len(results) > 0:
-        push.strategy('**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(strategy, list(results.keys())))
+    # if len(results) > 0:
+        # push.strategy('**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(strategy, list(results.keys())))
 
 
 def check_enter(end_date=None, strategy_fun=enter.check_volume):
