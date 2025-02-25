@@ -5,7 +5,7 @@ from logging.handlers import TimedRotatingFileHandler
 import data_fetcher
 import settings
 import strategy.enter as enter
-from strategy import turtle_trade, climax_limitdown
+from strategy import turtle_trade, climax_limitdown, macd, kdj, boll
 from strategy import backtrace_ma250
 from strategy import breakthrough_platform
 from strategy import parking_apron
@@ -45,15 +45,27 @@ def prepare():
         '均线多头': keep_increasing.check,
         # '停机坪': parking_apron.check,
         # '回踩年线': backtrace_ma250.check,
-         '突破平台': breakthrough_platform.check,
+        '突破平台': breakthrough_platform.check,
         '无大幅回撤': low_backtrace_increase.check,
         '海龟交易法则': turtle_trade.check_enter,
         # '高而窄的旗形': high_tight_flag.check,
         # '放量跌停': climax_limitdown.check,
+        '六个月MACD买入': macd.check,
+        '六个月MACD卖出': macd.check_sell,
+        'KDJ买入': kdj.check,
+        '布林带买入':boll.check
     }
+
+    sell_strategies = {
+        '六个月MACD卖出' : macd.check_sell,
+        'KDJ卖出':kdj.check_sell,
+        '布林带卖出': boll.check
+    }
+
 
     if datetime.datetime.now().weekday() == 0:
         strategies['均线多头'] = keep_increasing.check
+
 
     process(stocks, strategies)
 
@@ -67,6 +79,24 @@ def prepare():
             if len(intersection) > 0:
                 push.strategy(
                     '**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(combo_name, list(intersection)))
+
+    logger1.info("************************ 开始计算卖出策略 ***************************************")
+
+    #卖出策略重置map
+    totalMap.clear()
+    process(stocks, sell_strategies)
+
+    for r in range(2, len(totalMap) + 1):  # 从2个键到最大长度的组合
+        for combo in itertools.combinations(totalMap.keys(), r):
+            # 求键对应值的交集
+            intersection = set.intersection(*(totalMap[key] for key in combo))
+            # 打印组合名称和交集内容
+            combo_name = "+".join(combo)
+            logger1.info(f"{combo_name}:\n {intersection}")
+            if len(intersection) > 0:
+                push.strategy(
+                    '**************"{0}"**************\n{1}\n**************"{0}"**************\n'.format(combo_name, list(intersection)))
+
     logging.info("************************ process   end ***************************************")
 
 def process(stocks, strategies):
